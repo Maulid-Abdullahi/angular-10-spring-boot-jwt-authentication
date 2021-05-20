@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from '../_services/token-storage.service';
 
+/*
+* get user data from Session Storage
+* */
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',

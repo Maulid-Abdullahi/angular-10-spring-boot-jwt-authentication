@@ -13,8 +13,14 @@ import { ProfileComponent } from './profile/profile.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { BoardModeratorComponent } from './board-moderator/board-moderator.component';
 import { BoardUserComponent } from './board-user/board-user.component';
+import { ApplyLoansComponent } from './Loans/apply-loans/apply-loans.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
+import { CheckLoanLimitComponent } from './Loans/check-loan-limit/check-loan-limit.component';
+/*
+* gets user token & user information from Browser
+* Session Storage via token-storage.service.
+* Then the navbar now can display based on the user login state & roles.*/
 
 @NgModule({
   declarations: [
@@ -25,7 +31,9 @@ import { authInterceptorProviders } from './_helpers/auth.interceptor';
     ProfileComponent,
     BoardAdminComponent,
     BoardModeratorComponent,
-    BoardUserComponent
+    BoardUserComponent,
+    ApplyLoansComponent,
+    CheckLoanLimitComponent
   ],
   imports: [
     BrowserModule,

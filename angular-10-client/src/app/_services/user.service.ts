@@ -3,7 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 const API_URL = 'http://localhost:8080/api/test/';
-
+/*
+* BoardUser, BoardModerator, BoardAdmin components will
+* be displayed depending on roles from Session Storage.
+* we use user.service to get protected resources from API.*/
 @Injectable({
   providedIn: 'root'
 })

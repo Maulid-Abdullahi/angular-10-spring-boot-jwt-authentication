@@ -10,26 +10,10 @@ import {AuthService} from "../_services/auth.service";
 export class HomeComponent implements OnInit {
 
   form: any = {};
-  isSuccessful = false;
-  isSignUpFailed = false;
-  errorMessage = '';
   content: string;
 
-  constructor(private authService: AuthService,
-              private userService: UserService) { }
-  onSubmit(): void {
-    this.authService.register(this.form).subscribe(
-      data => {
-        console.log(data);
-        this.isSuccessful = true;
-        this.isSignUpFailed = false;
-      },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isSignUpFailed = true;
-      }
-    );
-  }
+  constructor(private userService: UserService) { }
+
 
   ngOnInit(): void {
     this.userService.getPublicContent().subscribe(
