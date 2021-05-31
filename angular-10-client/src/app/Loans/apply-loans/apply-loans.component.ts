@@ -17,7 +17,7 @@ export class ApplyLoansComponent implements OnInit {
   constructor(private authService: AuthService,private userService: UserService) { }
 
   onSubmit(): void {
-    this.authService.register(this.form).subscribe(
+    this.authService.applyLoans(this.form).subscribe(
       data => {
         console.log(data);
         this.isSuccessful = true;

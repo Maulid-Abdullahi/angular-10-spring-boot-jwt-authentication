@@ -21,7 +21,7 @@
           #firstname="ngModel"
         />
         <div class="alert-danger" *ngIf="f.submitted && firstname.invalid">
-          <div *ngIf="firstname.errors.required">lastname is required</div>
+          <div *ngIf="firstname.errors.required">firstname is required</div>
         </div>
       </div>
 
@@ -78,14 +78,9 @@
       <div class="form-group">
         <button class="btn btn-primary btn-block">Register</button>
       </div>
-
-      <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
-        Signup failed!<br />{{ errorMessage }}
-      </div>
     </form>
-
     <div class="alert alert-success" *ngIf="isSuccessful">
-      Your registration is successful!
+      Data sent successful!
     </div>
   </div>
 

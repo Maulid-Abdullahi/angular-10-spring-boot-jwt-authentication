@@ -1,97 +1,49 @@
 package com.bezkoder.springjwt.controllers;
 
-import com.bezkoder.springjwt.models.ERole;
-import com.bezkoder.springjwt.models.Role;
-import com.bezkoder.springjwt.models.User;
-import com.bezkoder.springjwt.payload.request.SignupRequest;
-import com.bezkoder.springjwt.payload.response.MessageResponse;
-import com.bezkoder.springjwt.repository.RoleRepository;
-import com.bezkoder.springjwt.repository.UserRepository;
-import com.bezkoder.springjwt.security.jwt.JwtUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.bezkoder.springjwt.models.ApplyLoan;
+import com.bezkoder.springjwt.security.services.AppliedLoansService;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 
 public class ApplyLoanController {
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    PasswordEncoder encoder;
-
-    @Autowired
-    JwtUtils jwtUtils;
+    private final AppliedLoansService appliedLoansService;
 
 
-    @PostMapping("/applyLoan")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
-
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
-
-        // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
-
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-
-                        break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    public ApplyLoanController(AppliedLoansService appliedLoansService) {
+        this.appliedLoansService = appliedLoansService;
     }
+    @PostMapping("/saveAll")
+    public void addLoans(@Valid @NonNull @RequestBody ApplyLoan applyLoan){
+        appliedLoansService.addLoans(applyLoan);
+    }
+
+    @GetMapping
+    public Iterable<ApplyLoan> getAllLoans(){
+        return appliedLoansService.selectALlLoans();
+    }
+
+    @GetMapping(path = "{id}")
+    public ApplyLoan getLoansById(@PathVariable("id") Long id){
+        return  appliedLoansService.selectLoanById(id)
+                .orElse(null);
+    }
+
+    @DeleteMapping("{id}")
+    public void DeleteLoans(@PathVariable("id") Long id){
+        appliedLoansService.deleteLoansById(id);
+    }
+
+    @PutMapping(path ="{id}")
+    public ApplyLoan UpdateLoansById(@PathVariable("id") UUID id,@Valid @NonNull @RequestBody ApplyLoan applyLoanToUpdate){
+        return appliedLoansService.updateLoansById(id, applyLoanToUpdate);
+    }
+
 }
