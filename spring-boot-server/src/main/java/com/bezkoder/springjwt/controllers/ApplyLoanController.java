@@ -25,7 +25,7 @@ public class ApplyLoanController {
         appliedLoansService.addLoans(applyLoan);
     }
 
-    @GetMapping
+    @GetMapping("/getAllLoans")
     public Iterable<ApplyLoan> getAllLoans(){
         return appliedLoansService.selectALlLoans();
     }

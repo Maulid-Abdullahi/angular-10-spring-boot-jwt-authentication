@@ -1,4 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+export class allLoanData {
+  constructor(
+    public id: number,
+    public firstname: string,
+    public lastname: string,
+    public idnumber: string,
+    public email: string,
+  ) {
+  }
+}
 
 @Component({
   selector: 'app-check-loan-limit',
@@ -7,9 +18,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckLoanLimitComponent implements OnInit {
 
-  constructor() { }
+  allLoanData : allLoanData[];
+
+  constructor(
+    private httpClient : HttpClient
+  ) { }
 
   ngOnInit(): void {
+    this.getAllLoanData();
+  }
+  getAllLoanData(){
+    this.httpClient.get<any>('http://localhost:8080/api/auth/getAllLoans').subscribe(
+      response => {
+        // console.log(response);
+        this.allLoanData = response;
+      }
+    );
   }
 
 }

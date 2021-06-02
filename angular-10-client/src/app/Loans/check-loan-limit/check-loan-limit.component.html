@@ -1,1 +1,35 @@
-<p>check-loan-limit works!</p>
+<div class="container">
+  <div class="border">
+    <button class="btn btn-md btn-outline-primary">
+      <i class="fa fa-user"></i>New Customer</button>
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th>ID Number</th>
+      <th>Email</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let loanData of allLoanData">
+      <td><span>{{loanData.id}}</span></td>
+      <td><span>{{loanData.firstname}}</span></td>
+      <td><span>{{loanData.lastname}}</span></td>
+      <td><span>{{loanData.idnumber}}</span></td>
+      <td><span>{{loanData.email}}</span></td>
+      <td>
+        <button class="btn btn-sm btn-info">
+          <i class="fa fa-search"></i>Details</button>
+        <button class="btn btn-sm btn-warning">
+          <i class="fa fa-edit"></i>Edit</button>
+        <button class="btn btn-sm btn-danger">
+          <i class="fa fa-remove"></i>Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
